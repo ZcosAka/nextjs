@@ -1,20 +1,24 @@
-import { Roboto } from 'next/font/google'
+import { Phudu } from 'next/font/google'
 import type { Metadata } from "next"
 import '../styles/globals.css'
 import { ThemeProvider } from '@/context/ThemeProvider'
 import { Suspense } from 'react'
 import { Loading } from '@/components/common'
+import Header from '@/components/layout/Header'
+import Footer from '@/components/layout/Footer'
 
 
-const roboto = Roboto({
-  weight: '400',
+const phudu = Phudu({
   subsets: ['latin'],
   display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title: "Tiệm Nướng Nọ",
-  description: "Tiệm Nướng Nọ kính chào quý khách",
+  title: "OM NƯỚNG",
+  icons: {
+    icon: "./images/icon/icon_logo.png"
+  },
+  description: "OM NƯỚNG - Authetic Vietnamese Cuisine",
 };
 
 export default function RootLayout({
@@ -24,12 +28,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={roboto.className} >
+      <body className={`${phudu.className} min-h-screen flex flex-col `} >
+        <Header />
         <Suspense fallback={<Loading />}>
           <ThemeProvider>
-            {children}
+            <main className="flex-1 overflow-y-auto">
+              {children}
+            </main>
           </ThemeProvider>
         </Suspense>
+        <Footer />
       </body>
     </html >
   );

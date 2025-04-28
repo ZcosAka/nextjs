@@ -4,17 +4,32 @@
   /* Your default theme */
   --background: white;
   --foreground: black;
+  --color-bg-header: #11664f;
+  --color-bg-content: #a4a4a4;
+  --color-bg-footer: white;
+  --color-text-footer: #0b5440;
+  --color-text-footer-link: #adcb72;
+  --color-btn-set-table: #f8eeda;
+  --color-btn-set-table-hover: #11664f;
+  --color-text-btn: #f8eeda;
+  --color-btn-unfocus: #233b38;
+  --color-btn-focus: #0b5440;
+  --color-btn-active: gray;
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   --background: black;
   --foreground: white;
 }
 
 @theme inline {
-  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans:
+    ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
   --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
 
   --color-red-50: oklch(0.971 0.013 17.38);
   --color-red-100: oklch(0.936 0.032 17.717);
@@ -23,4 +38,45 @@
   --shadow-2xs: 0 1px rgb(0 0 0 / 0.05);
   --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+.bg-header {
+  background-color: var(--color-bg-header);
+}
+.bg-content {
+  background-color: var(--color-bg-content);
+}
+.bg-footer {
+  background-color: var(--color-bg-footer);
+}
+.bg-btn-set-table {
+  background-color: var(--color-btn-set-table);
+}
+.text-footer {
+  color: var(--color-text-footer);
+}
+.text-footer-link {
+  color: var(--color-text-footer-link);
+}
+.text-btn {
+  color: var(--color-text-btn);
+}
+.bg-btn-unfocus {
+  background-color: var(--color-btn-unfocus);
+}
+.bg-btn-focus:focus {
+  background-color: var(--color-btn-focus);
+}
+.bg-btn-hover:hover {
+  background-color: var(--color-btn-focus);
+}
+.bg-btn-active:active {
+  background-color: var(--color-btn-active);
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

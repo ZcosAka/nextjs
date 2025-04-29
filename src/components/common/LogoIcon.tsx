@@ -2,7 +2,7 @@
 
 import { FC } from "react"
 import Image from 'next/image'
-import Logo from '../../../public/Images/icon/icon_logo.png'
+import Logo from '../../../public/images/icon/icon_logo.png'
 import { useRouter } from "next/navigation"
 
 interface LogoIconProps {

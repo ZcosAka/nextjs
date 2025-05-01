@@ -134,16 +134,16 @@ const TablePage = () => {
                             <span className="text-footer font-normal text-l">{`${time}`}</span>
                         </div>
                     </div>
-                    <div className="flex flex-2 flex-row justify-between items-center w-full px-4">
+                    <div className="flex flex-2 flex-row justify-between items-center w-full px-4 gap-4">
                         <button
                             onClick={() => {
                                 route.push("/product")
                             }}
-                            className="bg-btn-unfocus bg-btn-hover bg-btn-focus bg-btn-active justify-center items-center mt-4 py-2 px-4 w-42 h-12 transition duration-300 rounded-lg">
+                            className="flex-1 bg-btn-unfocus bg-btn-hover bg-btn-focus bg-btn-active justify-center items-center mt-4 py-2 px-4 h-12 transition duration-300 rounded-lg">
                             <span className="text-sm text-btn font-bold">Chọn món ăn</span>
                         </button>
                         <button
-                            className="bg-red-600 bg-btn-active mt-4 py-2 px-4 w-42 h-12 justify-center items-center transition duration-300 rounded-lg">
+                            className=" flex-1 bg-red-600 bg-btn-active mt-4 py-2 px-4 h-12 justify-center items-center transition duration-300 rounded-lg">
                             <span className="text-sm text-btn font-bold">Bỏ qua</span>
                         </button>
                     </div>

@@ -2,20 +2,14 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import clsx from 'clsx';
 
 const categories = [
     { id: 'phan-an-nhom', label: 'Phần Ăn Nhóm', img: '/images/phan-an-nhom.png' },
     { id: 'ga-ran', label: 'Gà Rán', img: '/images/ga-ran.png' },
     { id: '', label: 'Burger', img: '/images/burger.png' },
     { id: 'khuyen-mai', label: 'Burger', img: '/images/burger.png' },
-    { id: 'thuc-uong', label: 'Burger', img: '/images/burger.png' },
-    { id: 'do-kho', label: 'Burger', img: '/images/burger.png' },
-    { id: 'do-kho-1', label: 'Burger', img: '/images/burger.png' },
-    { id: 'do-kho-2', label: 'Burger', img: '/images/burger.png' },
-    { id: 'do-kho-3', label: 'Burger', img: '/images/burger.png' },
-    { id: 'do-kho-4', label: 'Burger', img: '/images/burger.png' },
-    { id: 'do-kho-5', label: 'Burger', img: '/images/burger.png' },
-    { id: 'do-kho-6', label: 'Burger', img: '/images/burger.png' }
+    { id: 'thuc-uong', label: 'Burger', img: '/images/burger.png' }
 ];
 
 const products = [
@@ -44,6 +38,7 @@ const ProductPage = () => {
     const [selectedCategory, setSelectedCategory] = useState<string>('phan-an-nhom')
     const scrollRef = useRef<HTMLDivElement>(null)
     const [currentPage, setCurrentPage] = useState<number>(0)
+    const [itemsPerPage, setItemsPerPage] = useState(8); // Default: Desktop
 
     const isDragging = useRef<boolean>(false)
     const startX = useRef<number>(0)
@@ -100,13 +95,47 @@ const ProductPage = () => {
         return () => container?.removeEventListener("scroll", handleScroll)
     }, [totalPage])
 
+    useEffect(() => {
+        const updateItems = () => {
+            const width = window.innerWidth;
+            if (width < 768) setItemsPerPage(4); // Mobile / Tablet
+            else setItemsPerPage(8);             // Desktop
+        };
+
+        updateItems(); // initial
+        window.addEventListener('resize', updateItems);
+        return () => window.removeEventListener('resize', updateItems)
+    }, [])
+
+
     const filteredProducts = products.filter(
         (product) => product.category === selectedCategory
-    );
+    )
+
+    useEffect(() => {
+        const maxPage = Math.ceil(filteredProducts.length / itemsPerPage) - 1;
+        if (currentPage > maxPage) {
+            setCurrentPage(maxPage)
+        }
+    }, [itemsPerPage, filteredProducts.length])
+
+    const handleGetTotalPage = () => {
+        const totalPage = Math.ceil(filteredProducts.length / itemsPerPage)
+        return totalPage
+    }
+
+    const handleGetCurrentPage = () => {
+        const currentProducts = filteredProducts.slice(
+            currentPage * itemsPerPage,
+            (currentPage + 1) * itemsPerPage
+        )
+        return currentProducts
+    }
 
     return (
-        <section className="flex flex-row items-start max-w-full max-h-full bg-btn-set-table p-4 gap-10">
-            <div className='flex flex-2 flex-col justify-center items-center w-2xl'>
+
+        <section className="flex flex-col lg:flex-row  items-start max-w-full max-h-full bg-btn-set-table p-4 gap-10">
+            <div className='flex flex-col justify-center items-center w-full lg:w-3xl'>
                 <div className="flex flex-col items-center justify-center w-full overflow-hidden" >
                     {/* Categories */}
                     <div className="flex gap-4 w-full overflow-x-auto whitespace-nowrap scroll-smooth no-scrollbar cursor-grab active:cursor-grabbing"
@@ -125,14 +154,15 @@ const ProductPage = () => {
                                 exit={{ opacity: 0, y: -10 }}
                                 transition={{ duration: 0.3 }}
                                 onClick={() => setSelectedCategory(cat.id)}
-                                className={`flex flex-col items-center w-28 h-28  rounded-xl transition-colors duration-300 justify-center 
-        ${selectedCategory === cat.id ? 'bg-white border-2 border-green-800' : 'bg-white'}
-      `}>
-                                <div className="relative w-27 h-20 mb-2">
+                                className={clsx('flex flex-col items-center min-w-[25%] sm:min-w-[120px] h-28  rounded-xl transition-colors duration-300 justify-start overflow-hidden gap-2',
+                                    selectedCategory === cat.id
+                                        ? 'bg-white border-2 border-green-700'
+                                        : 'bg-white')}>
+                                <div className="relative w-full h-20">
                                     {/* <Image src={cat.img} alt={cat.label} fill className="object-contain" /> */}
-                                    <Image src={"https://omnuong.vn/wp-content/uploads/2024/10/DSC9778-min.png.webp"} alt={cat.label} className="object-center rounded-t-xl" fill />
+                                    <Image src={"https://omnuong.vn/wp-content/uploads/2024/10/DSC9778-min.png.webp"} alt={cat.label} className="object-center" fill />
                                 </div>
-                                <span className="text-sm font-semibold text-center">{cat.label}</span>
+                                <span className="text-[clamp(12px,2vw,18px)] font-semibold text-center px-2">{cat.label}</span>
                             </motion.button>
                         ))}
                     </div>
@@ -153,34 +183,34 @@ const ProductPage = () => {
                     </div>
                 </div>
                 {/* Product List */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
                     <AnimatePresence mode="popLayout">
-                        {filteredProducts.map((product) => (
+                        {handleGetCurrentPage().map((product) => (
                             <motion.div
                                 key={product.id}
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -20 }}
                                 transition={{ duration: 0.3 }}
-                                className="bg-white rounded-xl shadow-xl flex flex-col min-w-[200px]"
+                                className="bg-white rounded-xl shadow-xl flex flex-col"
                             >
                                 <div className="relative w-full h-40 mb-4">
                                     {/* <Image src={product.img} alt={product.name} fill className="object-contain" /> */}
                                     <Image src={"https://omnuong.vn/wp-content/uploads/2024/12/final-muop-xao-long.png.webp"} alt={product.name} fill className="object-center rounded-t-xl" />
                                 </div>
                                 <div className='flex flex-col p-4 justify-center'>
-                                    <h2 className="text-footer text-lg font-bold mb-1">{product.name}</h2>
-                                    <p className="text-gray-500 text-sm mb-3">{product.desc}</p>
+                                    <h2 className="text-footer text-lg font-bold mb-1 text-[clamp(12px,2vw,18px)] ">{product.name}</h2>
+                                    <p className="text-gray-500 text-sm mb-3 text-[clamp(12px,2vw,18px)] ">{product.desc}</p>
                                     <div className="mt-auto">
-                                        <div className="flex items-center justify-between">
+                                        <div className="flex flex-row items-center justify-between">
                                             <div>
-                                                <p className="text-pink-600 font-bold text-xl">{product.price.toLocaleString()} đ</p>
-                                                <p className="text-gray-400 text-sm line-through">{product.oldPrice.toLocaleString()} đ</p>
+                                                <p className="text-pink-600 font-bold text-[clamp(12px,2vw,18px)] ">{product.price.toLocaleString()} đ</p>
+                                                <p className="text-gray-400 text-sm line-through text-[clamp(12px,2vw,18px)] ">{product.oldPrice.toLocaleString()} đ</p>
                                             </div>
-                                            <button className="bg-header bg-btn-hover bg-btn-focus bg-btn-active mt-4 py-2 px-4 transition duration-300 rounded-lg
-                                            hover:scale-105 active:scale-95
+                                            <button className="flex flex-col bg-header bg-btn-hover bg-btn-focus bg-btn-active mt-4 py-2 px-4 transition duration-300 rounded-lg
+                                            hover:scale-105 active:scale-95 justify-center items-center w-9 h-9
                                             ">
-                                                <span className='text-sm text-btn font-bold'>{`+`}</span>
+                                                <span className='text-xl text-btn font-bold'>{`+`}</span>
                                             </button>
                                         </div>
                                     </div>
@@ -189,9 +219,20 @@ const ProductPage = () => {
                         ))}
                     </AnimatePresence>
                 </div>
+                {handleGetTotalPage() > 1 && (
+                    <div className="flex justify-center mt-4 gap-2">
+                        {Array.from({ length: handleGetTotalPage() }).map((_, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => setCurrentPage(idx)}
+                                className={`w-3 h-3 rounded-full ${currentPage === idx ? "bg-header" : "bg-gray-300"}`}
+                            />
+                        ))}
+                    </div>
+                )}
             </div>
             <motion.div
-                className='flex flex-1 flex-col justify-start items-center bg-white w-xl rounded-2xl gap-4 min-h-[300px] max-h-[90vh] overflow-y-auto p-4'
+                className='flex flex-col justify-start items-center w-full lg:w-xl bg-white rounded-2xl gap-4 min-h-[300px] max-h-[90vh] overflow-y-auto p-4'
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
@@ -199,9 +240,9 @@ const ProductPage = () => {
             >
                 {/* hiển thị title */}
                 <div className="flex flex-col border-b-2 justify-center items-center border-green-800">
-                    <span className="text-footer font-bold text-2xl">{`Chọn món cho bàn 3`}</span>
-                    <span className="text-footer font-thin text-xl">{`${address}`}</span>
-                    <span className="text-footer font-thin text-xl">{`${time}`}</span>
+                    <span className="text-footer font-bold text-[clamp(12px,2vw,2xl)]">{`Chọn món cho bàn 3`}</span>
+                    <span className="text-footer font-thin text-[clamp(12px,2vw,xl)]">{`${address}`}</span>
+                    <span className="text-footer font-thin text-[clamp(12px,2vw,xl)]">{`${time}`}</span>
                 </div>
                 {/* hiển thị list sản phẩm đã chọn */}
                 <div className="flex flex-col justify-center items-center w-full gap-4">
@@ -213,8 +254,8 @@ const ProductPage = () => {
                             className='object-center rounded-2xl'
                             alt={'mon-an-1'}
                         />
-                        <span className="text-footer font-normal text-l">{'Lòng xào mướp x 1'}</span>
-                        <span className="text-red-400 font-normal text-l">{'180.000 VNĐ'}</span>
+                        <span className="text-footer font-normal text-[clamp(12px,2vw,18px)]">{'Lòng xào mướp x 1'}</span>
+                        <span className="text-red-400 font-normal text-[clamp(12px,2vw,18px)]">{'180.000 VNĐ'}</span>
                     </div>
                     <div className='flex flex-1 flex-row w-full justify-between items-center'>
                         <Image
@@ -224,8 +265,8 @@ const ProductPage = () => {
                             className='object-center rounded-2xl'
                             alt={'mon-an-2'}
                         />
-                        <span className="text-footer font-normal text-l">{'Lẩu cá bóp x 1'}</span>
-                        <span className="text-red-400 font-normal text-l">{'250.000 VNĐ'}</span>
+                        <span className="text-footer font-normal text-[clamp(12px,2vw,18px)]">{'Lẩu cá bóp x 1'}</span>
+                        <span className="text-red-400 font-normal text-[clamp(12px,2vw,18px)]">{'250.000 VNĐ'}</span>
                     </div>
                     <div className='flex flex-1 flex-row w-full justify-between items-center'>
                         <Image
@@ -235,14 +276,14 @@ const ProductPage = () => {
                             className='object-center rounded-2xl'
                             alt={'mon-an-2'}
                         />
-                        <span className="text-footer font-normal text-l">{'Trà đào cam xả x 1'}</span>
-                        <span className="text-red-400 font-normal text-l">{'50.000 VNĐ'}</span>
+                        <span className="text-footer font-normal text-[clamp(12px,2vw,18px)]">{'Trà đào cam xả x 1'}</span>
+                        <span className="text-red-400 font-normal text-[clamp(12px,2vw,18px)]">{'50.000 VNĐ'}</span>
                     </div>
                 </div>
                 {/* hiển thị tổng số tiền và tổng món ăn */}
                 <div className="flex flex-row justify-end items-center w-full gap-4">
-                    <span className="text-footer font-normal text-l">{'Tổng thanh toán:'}</span>
-                    <span className="text-red-400 font-normal text-l">{'480.000 VNĐ'}</span>
+                    <span className="text-footer font-normal text-[clamp(12px,2vw,18px)]">{'Tổng thanh toán:'}</span>
+                    <span className="text-red-400 font-normal text-[clamp(12px,2vw,18px)]">{'480.000 VNĐ'}</span>
                 </div>
                 {/* nút thanh toán */}
                 <div className='flex flex-col w-full justify-center items-center'>

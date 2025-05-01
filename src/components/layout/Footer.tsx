@@ -82,7 +82,7 @@ const Footer = () => {
     }
 
     return (
-        <footer className="bg-footer  flex flex-row">
+        <footer className="bg-footer  flex flex-col lg:flex-row">
             <div className="flex flex-1/4 flex-col justify-center items-start p-10">
                 {Footer_Left.map((item, index) => {
                     return (
@@ -93,15 +93,15 @@ const Footer = () => {
                                 handleClickLink(item.link)
                             }}
                         >
-                            <p className="text-footer-link text-1 font-bold text-footer underline underline-offset-8 h-auto">{`0${item.id}`}</p>
-                            <p className="text-3xl font-bold text-footer">{item.title.toLocaleUpperCase()}</p>
+                            <p className="text-footer-link text-[clamp(12px,2vw,18px)] font-bold text-footer underline underline-offset-8 h-auto">{`0${item.id}`}</p>
+                            <p className="text-[clamp(12px,2vw,120px)] font-bold text-footer">{item.title}</p>
                         </button>
                     )
                 })
                 }
             </div>
             <div className="flex flex-1/2 flex-col  py-5 gap-5">
-                <div className="grid grid-cols-2 grid-rows-3 gap-1 flex-1/2">
+                <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-1 flex-1/2 p-4">
                     {Footer_Right.map((item, index) => {
                         return (
                             <button
@@ -111,7 +111,7 @@ const Footer = () => {
                                     handleClickLink(item.link)
                                 }}
                             >
-                                <h1 className="text-xl font-bold text-footer">{`${item.brach}`}</h1>
+                                <h1 className="text-[clamp(12px,2vw,18px)] font-bold text-footer">{`${item.brach}`}</h1>
                                 <div className='flex flex-row items-center gap-1 justify-center'>
                                     <Image
                                         src={"https://omnuong.vn/wp-content/uploads/2024/09/icon-directions.png.webp"}
@@ -120,26 +120,26 @@ const Footer = () => {
                                         height={24}
                                         className='border'
                                     />
-                                    <p className="text-base font-light text-footer">{item.address}</p>
+                                    <p className="text-[clamp(12px,2vw,18px)] font-light text-footer">{item.address}</p>
                                 </div>
                             </button>
                         )
                     })
                     }
                 </div>
-                <div className='flex flex-1/2 flex-col justify-center items-start'>
-                    <p className="text-base font-light text-footer">Tổng đài: <span className='text-base font-bold text-footer'>1900255869</span> – Email:  <span className='text-base font-bold text-footer'>info@omnuong.vn</span></p>
-                    <p className="text-base font-light text-footer">Thời gian hoạt động: <span className='text-base font-bold text-footer'> 16h30 – 24h00 (Thứ 2 đến Chủ nhật)</span></p>
+                <div className='flex flex-1/2 flex-col justify-center items-start p-4'>
+                    <p className="text-[clamp(12px,2vw,18px)] font-light text-footer">Tổng đài: <span className='text-[clamp(12px,2vw,18px)] font-bold text-footer'>1900255869</span> – Email:  <span className='text-[clamp(12px,2vw,18px)] font-bold text-footer'>info@omnuong.vn</span></p>
+                    <p className="text-[clamp(12px,2vw,18px)] font-light text-footer">Thời gian hoạt động: <span className='text-[clamp(12px,2vw,18px)] font-bold text-footer'> 16h30 – 24h00 (Thứ 2 đến Chủ nhật)</span></p>
                 </div>
-                <div className='flex flex-1/2 flex-col justify-center items-start'>
+                <div className='flex flex-1/2 flex-col justify-center items-start p-4'>
                     <button>
-                        <span onClick={() => { handleClickLink("https://omnuong.vn/ho-tro-khach-hang/") }} className="text-base font-bold text-footer hover:bg-gray-200 rounded-lg">Hỗ trợ khách hàng</span>
+                        <span onClick={() => { handleClickLink("https://omnuong.vn/ho-tro-khach-hang/") }} className="text-[clamp(12px,2vw,18px)] font-bold text-footer hover:bg-gray-200 rounded-lg">Hỗ trợ khách hàng</span>
                     </button>
                     <button>
-                        <span onClick={() => { handleClickLink("https://omnuong.vn/dieu-khoan-su-dung/") }} className="text-base font-light text-footer hover:bg-gray-200 rounded-lg">Điều khoản sử dụng</span>
+                        <span onClick={() => { handleClickLink("https://omnuong.vn/dieu-khoan-su-dung/") }} className="text-[clamp(12px,2vw,18px)] font-light text-footer hover:bg-gray-200 rounded-lg">Điều khoản sử dụng</span>
                     </button>
                     <button>
-                        <span onClick={() => { handleClickLink("https://omnuong.vn/chinh-sach-bao-mat/") }} className="text-base font-light text-footer hover:bg-gray-200 rounded-lg">Chính sách bảo mật</span>
+                        <span onClick={() => { handleClickLink("https://omnuong.vn/chinh-sach-bao-mat/") }} className="text-[clamp(12px,2vw,18px)] font-light text-footer hover:bg-gray-200 rounded-lg">Chính sách bảo mật</span>
                     </button>
                 </div>
             </div>

@@ -34,6 +34,11 @@ const numPerPage = 4
 const address = "CN1 - OM Nướng Hoàng Văn Thụ"
 const time = '16h30 - 28/05/2025'
 
+interface ChoosePayment {
+    isMomo: boolean,
+    isBank: boolean
+}
+
 const ProductPage = () => {
     const [selectedCategory, setSelectedCategory] = useState<string>('phan-an-nhom')
     const scrollRef = useRef<HTMLDivElement>(null)
@@ -43,6 +48,10 @@ const ProductPage = () => {
     const isDragging = useRef<boolean>(false)
     const startX = useRef<number>(0)
     const scrollLeft = useRef<number>(0)
+    const [choosePayment, setChoosePayment] = useState<ChoosePayment>({
+        isMomo: false,
+        isBank: false
+    })
 
     const handleMouseDown = (e: React.MouseEvent) => {
         isDragging.current = true
@@ -240,9 +249,9 @@ const ProductPage = () => {
             >
                 {/* hiển thị title */}
                 <div className="flex flex-col border-b-2 justify-center items-center border-green-800">
-                    <span className="text-footer font-bold text-[clamp(12px,2vw,2xl)]">{`Chọn món cho bàn 3`}</span>
-                    <span className="text-footer font-thin text-[clamp(12px,2vw,xl)]">{`${address}`}</span>
-                    <span className="text-footer font-thin text-[clamp(12px,2vw,xl)]">{`${time}`}</span>
+                    <span className="text-footer font-bold text-[clamp(15px,2vw,20px)]">{`Chọn món cho bàn 3`}</span>
+                    <span className="text-footer font-thin text-[clamp(13px,2vw,18px)]">{`${address}`}</span>
+                    <span className="text-footer font-thin text-[clamp(13px,2vw,18px)]">{`${time}`}</span>
                 </div>
                 {/* hiển thị list sản phẩm đã chọn */}
                 <div className="flex flex-col justify-center items-center w-full gap-4">
@@ -285,11 +294,64 @@ const ProductPage = () => {
                     <span className="text-footer font-normal text-[clamp(12px,2vw,18px)]">{'Tổng thanh toán:'}</span>
                     <span className="text-red-400 font-normal text-[clamp(12px,2vw,18px)]">{'480.000 VNĐ'}</span>
                 </div>
+                {/* hiển thị title chọn phương thức thanh toán */}
+                <div className="flex flex-col border-b-2 justify-center items-center border-green-800">
+                    <span className="text-footer font-bold text-[clamp(15px,2vw,20px)]">{`Chọn Phương thức thanh toán`}</span>
+                </div>
+                <div className='flex flex-col w-full justify-center items-center gap-5'>
+                    <div className='flex flex-row w-full justify-start items-center gap-2'>
+                        <input
+                            id="is-momo"
+                            type="radio"
+                            checked={choosePayment.isMomo}
+                            onChange={(e) => {
+                                setChoosePayment({
+                                    isMomo: true,
+                                    isBank: false
+                                })
+                            }}
+                        />
+                        <label htmlFor="is-momo" className='text-[clamp(13px,2vw,15px)] text-footer'>Thanh toán bằng Momo</label>
+                        <Image
+                            src={'/images/icon/icon_momo.png'}
+                            height={20}
+                            width={20}
+                            className='object-center'
+                            alt={'icon_momo'}
+                        />
+                    </div>
+                    <div className='flex flex-row w-full justify-start items-center gap-2'>
+                        <input
+                            id="is-bank"
+                            type="radio"
+                            checked={choosePayment.isBank}
+                            onChange={(e) => {
+                                setChoosePayment({
+                                    isMomo: false,
+                                    isBank: true
+                                })
+                            }}
+                        />
+                        <label htmlFor="is-bank" className='text-[clamp(13px,2vw,15px)] text-footer'>Thanh toán bằng ngân hàng</label>
+                        <Image
+                            src={'/images/icon/icon_bank_card.png'}
+                            height={30}
+                            width={30}
+                            className='object-center'
+                            alt={'icon_bank_card'}
+                        />
+                    </div>
+                </div>
                 {/* nút thanh toán */}
                 <div className='flex flex-col w-full justify-center items-center'>
                     <button
                         onClick={() => {
-                            // route.push("/product")
+                            if (choosePayment.isMomo) {
+                                alert("Thanh toán qua momo")
+                                return
+                            }
+                            alert("Thanh toán qua ngân hàng")
+                            return
                         }}
                         className="bg-btn-unfocus bg-btn-hover bg-btn-focus bg-btn-active justify-center items-center mt-4 py-2 px-4 w-full h-12 transition duration-300 rounded-lg">
                         <span className="text-sm text-btn font-bold">Thanh toán</span>

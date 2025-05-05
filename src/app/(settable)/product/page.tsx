@@ -304,7 +304,7 @@ const ProductPage = () => {
                             id="is-momo"
                             type="radio"
                             checked={choosePayment.isMomo}
-                            onChange={(e) => {
+                            onChange={() => {
                                 setChoosePayment({
                                     isMomo: true,
                                     isBank: false
@@ -325,7 +325,7 @@ const ProductPage = () => {
                             id="is-bank"
                             type="radio"
                             checked={choosePayment.isBank}
-                            onChange={(e) => {
+                            onChange={() => {
                                 setChoosePayment({
                                     isMomo: false,
                                     isBank: true

@@ -12,12 +12,11 @@ const Home = () => {
   }
 
   return (
-    <section className="flex flex-col items-center justify-center max-h-screen gap-5 p-50 bg-btn-set-table">
-      <div className="flex flex-col justify-center items-center w-auto gap-2">
-        <h1 className="text-4xl font-bold mb-4 text-footer">Chào mừng đến với OM NƯỚNG</h1>
-        <p className="text-xl text-gray-600 font-light text-footer">Đặt bàn nhanh chóng - Trải nghiệm tuyệt vời</p>
+    <section className="flex flex-col items-center max-w-full max-h-full justify-center gap-5 py-5 bg-btn-set-table">
+      <div className="flex flex-col justify-center w-full items-center gap-2">
+        <h1 className="text-[clamp(22px,2vw,30px)] font-bold text-footer">Chào mừng đến với OM NƯỚNG</h1>
+        <p className="text-[clamp(16px,2vw,18px)] text-gray-600 font-light text-footer">Đặt bàn nhanh chóng - Ẩm thực phong phú</p>
       </div>
-
       <form
         onSubmit={handleSubmit}
         className="bg-white rounded-2xl shadow-md p-6 w-full max-w-xl space-y-4"

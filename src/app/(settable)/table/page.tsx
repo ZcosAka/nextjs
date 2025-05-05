@@ -35,9 +35,9 @@ const TablePage = () => {
     const route = useRouter()
 
     return (
-        <section className="flex flex-row px-10 py-6 max-w-full max-h-full bg-btn-set-table gap-10">
-            <div className="flex flex-2 flex-col max-h-full justify-center items-center py-5">
-                <div className="grid grid-cols-3 gap-20">
+        <section className="flex flex-col lg:flex-row px-10 py-6 max-w-full max-h-full bg-btn-set-table gap-10">
+            <div className="flex flex-2 flex-col max-h-full max-w-full justify-center items-center">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-10">
                     {tables.map((table) => (
                         <motion.button
                             key={table.id}
@@ -47,7 +47,7 @@ const TablePage = () => {
                             exit={{ opacity: 0, y: -20 }}
                             transition={{ duration: 0.3 }}
                             className={clsx(
-                                "relative w-52 h-32 rounded-xl shadow-lg flex items-center justify-center transition-all duration-300 group",
+                                "relative w-30 lg:w-52 h-22 lg:h-32 rounded-xl shadow-lg flex items-center justify-center transition-all duration-300 group",
                                 table.isSet
                                     ? "bg-orange-400 cursor-not-allowed opacity-80" :
                                     selectTable.id === table.id
@@ -107,7 +107,7 @@ const TablePage = () => {
                                 )} />
 
                             {/* Số bàn */}
-                            <span className={clsx("text-lg font-bold  transition-colors duration-300",
+                            <span className={clsx("text-[clamp(12px,2vw,20px)] font-bold  transition-colors duration-300",
                                 table.isSet
                                     ? 'text-btn' :
                                     selectTable.id === table.id
@@ -118,7 +118,7 @@ const TablePage = () => {
                     ))}
                 </div>
             </div>
-            <div className="flex flex-1 flex-col justify-center items-center max-w-full gap-4">
+            <div className="flex flex-1 flex-col max-h-full justify-center items-center max-w-full gap-4">
                 {/* Chi tiết đặt bàn */}
                 <div className="flex flex-1 flex-col max-h-full bg-white justify-start items-center w-full rounded-2xl shadow-lg py-4 gap-4">
                     <div className="flex-1 border-b-2 border-green-800">

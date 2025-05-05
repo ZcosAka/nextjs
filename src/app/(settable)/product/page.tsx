@@ -44,6 +44,7 @@ const ProductPage = () => {
     const scrollRef = useRef<HTMLDivElement>(null)
     const [currentPage, setCurrentPage] = useState<number>(0)
     const [itemsPerPage, setItemsPerPage] = useState(8); // Default: Desktop
+    const [currentPageProd, setCurrentPageProd] = useState<number>(0)
 
     const isDragging = useRef<boolean>(false)
     const startX = useRef<number>(0)
@@ -89,13 +90,13 @@ const ProductPage = () => {
     useEffect(() => {
         const handleScroll = () => {
             const container = scrollRef.current;
-            if (!container) return;
+            if (!container) return
 
             const scrollLeft = container.scrollLeft || 0;
             if (scrollLeft) {
                 const widthPerPage = container.scrollWidth / totalPage;
                 const page = Math.round(scrollLeft / widthPerPage);
-                setCurrentPage(page);
+                setCurrentPage(page)
             }
         }
 
@@ -135,8 +136,8 @@ const ProductPage = () => {
 
     const handleGetCurrentPage = () => {
         const currentProducts = filteredProducts.slice(
-            currentPage * itemsPerPage,
-            (currentPage + 1) * itemsPerPage
+            currentPageProd * itemsPerPage,
+            (currentPageProd + 1) * itemsPerPage
         )
         return currentProducts
     }
@@ -233,8 +234,8 @@ const ProductPage = () => {
                         {Array.from({ length: handleGetTotalPage() }).map((_, idx) => (
                             <button
                                 key={idx}
-                                onClick={() => setCurrentPage(idx)}
-                                className={`w-3 h-3 rounded-full ${currentPage === idx ? "bg-header" : "bg-gray-300"}`}
+                                onClick={() => setCurrentPageProd(idx)}
+                                className={`w-3 h-3 rounded-full ${currentPageProd === idx ? "bg-header" : "bg-gray-300"}`}
                             />
                         ))}
                     </div>
@@ -350,7 +351,11 @@ const ProductPage = () => {
                                 alert("Thanh toán qua momo")
                                 return
                             }
-                            alert("Thanh toán qua ngân hàng")
+                            if (choosePayment.isBank) {
+                                alert("Thanh toán qua ngân hàng")
+                                return
+                            }
+                            alert('Vui lòng chọn phương thức thanh toán!!')
                             return
                         }}
                         className="bg-btn-unfocus bg-btn-hover bg-btn-focus bg-btn-active justify-center items-center mt-4 py-2 px-4 w-full h-12 transition duration-300 rounded-lg">
